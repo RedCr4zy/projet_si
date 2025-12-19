@@ -1,11 +1,10 @@
-"""
 import asyncio
 from aiohttp import web
 import json
 import random
 
 CLIENTS = set()
-print('Script launched')
+print('Script lancé')
 
 # ---------- WEBSOCKET ----------
 async def ws_handler(request):
@@ -40,24 +39,11 @@ async def send_sensor_values(app):
 # ---------- HTTP ----------
 app = web.Application()
 app.router.add_get('/ws', ws_handler)
+# Sert tout le contenu du dossier html, index.html par défaut
 app.router.add_static('/', path='html', show_index=True)
 
+# Lance la boucle pour envoyer les valeurs du capteur
 app.on_startup.append(lambda app: asyncio.create_task(send_sensor_values(app)))
 
-web.run_app(app, host='0.0.0.0', port=8000)
-"""
-
-from aiohttp import web
-import asyncio
-
-print(">>> server.py démarre")
-
-async def hello(request):
-    print("Nouvelle connection")
-    return web.Response(text="Serveur OK")
-
-app = web.Application()
-app.router.add_get('/', hello)
-
-print(">>> Lancement du serveur sur le port 8000")
+# Démarrage du serveur
 web.run_app(app, host='0.0.0.0', port=8000)
