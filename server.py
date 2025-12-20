@@ -4,6 +4,7 @@ import json
 import random
 
 CLIENTS = set()
+IP = host
 print('Script lancé')
 
 # ---------- WEBSOCKET ----------
@@ -46,5 +47,5 @@ app.router.add_static('/', path='html', show_index=True)
 app.on_startup.append(lambda app: asyncio.create_task(send_sensor_values(app)))
 
 # Démarrage du serveur
-web.run_app(app, host=host, port=8080)
+web.run_app(app, host=IP, port=8080)
 print("Serveur lancé sur : ", host)
