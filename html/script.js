@@ -1,7 +1,7 @@
 const valueDiv = document.getElementById("value");
 const button = document.getElementById("btn");
 
-const ws = new WebSocket(`ws://${location.host}:8000/ws`);
+const ws = new WebSocket(`ws://${location.hostname}:8000/ws`);
 
 console.log(ws)
 
