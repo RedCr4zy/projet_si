@@ -1,12 +1,14 @@
 import asyncio
-from aiohttp import web
 import json
-import random
+from aiohttp import web
+from grove.adc import ADC
 
+print("Serveur Python démarré")
+
+adc = ADC()
 CLIENTS = set()
-print('Script lancé')
 
-# ---------- WEBSOCKET ----------
+# ---------- WebSocket ----------
 async def ws_handler(request):
     ws = web.WebSocketResponse()
     await ws.prepare(request)
@@ -17,15 +19,19 @@ async def ws_handler(request):
     async for msg in ws:
         if msg.type == web.WSMsgType.TEXT:
             data = json.loads(msg.data)
-            print("Reçu du navigateur :", data)
+
+            if data["type"] == "button":
+                print("👉 Bouton cliqué depuis la page web")
 
     CLIENTS.remove(ws)
     print("Client WebSocket déconnecté")
     return ws
 
-async def send_sensor_values(app):
+
+# ---------- Lecture capteur ----------
+async def sensor_loop(app):
     while True:
-        value = random.randint(0, 1023)  # capteur simulé
+        value = adc.read(0)  # A0
         message = json.dumps({
             "type": "sensor",
             "value": value
@@ -34,16 +40,14 @@ async def send_sensor_values(app):
         for ws in CLIENTS:
             await ws.send_str(message)
 
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.1)  # 10 Hz
 
-# ---------- HTTP ----------
+
+# ---------- Serveur HTTP ----------
 app = web.Application()
-app.router.add_get('/ws', ws_handler)
-# Sert tout le contenu du dossier html, index.html par défaut
-app.router.add_static('/', path='html', show_index=True)
+app.router.add_get("/ws", ws_handler)
+app.router.add_static("/", path="html", show_index=True)
 
-# Lance la boucle pour envoyer les valeurs du capteur
-app.on_startup.append(lambda app: asyncio.create_task(send_sensor_values(app)))
+app.on_startup.append(lambda app: asyncio.create_task(sensor_loop(app)))
 
-# Démarrage du serveur
-web.run_app(app, host='0.0.0.0', port=8080)
+web.run_app(app, host="0.0.0.0", port=8000)

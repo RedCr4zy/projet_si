@@ -1,25 +1,20 @@
 body {
-    background: radial-gradient(circle, #111, #000);
-    color: red;
+    background: #111;
+    color: #00ffcc;
     font-family: Arial, sans-serif;
     text-align: center;
 }
 
-h1 {
-    margin-top: 30px;
-}
-
 #value {
-    font-size: 90px;
+    font-size: 80px;
     margin: 40px;
-    color: #00ffcc;
 }
 
 button {
     font-size: 20px;
-    padding: 10px 30px;
-    background: #00ffcc;
+    padding: 15px 30px;
     border: none;
     border-radius: 10px;
+    background: #00ffcc;
     cursor: pointer;
 }
