@@ -46,4 +46,4 @@ app.router.add_static('/', path='html', show_index=True)
 app.on_startup.append(lambda app: asyncio.create_task(send_sensor_values(app)))
 
 # Démarrage du serveur
-web.run_app(app, host='0.0.0.0', port=8000)
+web.run_app(app, host='0.0.0.0', port=8080)
