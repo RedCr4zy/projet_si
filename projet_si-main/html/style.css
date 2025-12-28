@@ -1,0 +1,97 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+button {
+    font-size: 1.2rem;
+    padding: 1em 2em;
+    border: none;
+    border-radius: 10px;
+    background: #00ffcc;
+    cursor: pointer;
+}
+
+
+/* layout */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* left column (time_line + jsp) */
+.left {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+/*
+#time_line { flex: 1; background: green; display:flex; align-items:center; justify-content:center; }
+#jsp { flex: 1; background: red; display:flex; align-items:center; justify-content:center; }
+*/
+#time_line { flex: 1; display:flex; align-items:center; justify-content:center; }
+#jsp { flex: 1; display:flex; align-items:center; justify-content:center; }
+
+/* instruments on right */
+#instruments {
+  flex: 1;
+  /*background: blue;*/
+  padding: 2vh 1.5vw;
+  position: relative;
+  overflow: hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* instruments stack container */
+.instruments-list {
+  position: relative;
+  width: 100%;
+  height: 90%;
+  display: block;
+}
+
+/* each card (absolute positioned by JS) */
+.instrument-card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 240px;
+  height: auto;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  text-align: center;
+  transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease, filter 220ms ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* name */
+.instrument-card .name {
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* nice responsive text sizes */
+.instrument-card .icon {
+  font-size: clamp(24px, 4vw, 48px);
+}
+.instrument-card .name { font-size: clamp(16px, 2.2vw, 22px); }
+
+/* keyboard / small screens layout fallback */
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  #instruments { order: 3; width: 100%; height: 40vh; padding: 8px; }
+  .instruments-list { height: 100%; }
+}
