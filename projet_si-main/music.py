@@ -8,10 +8,15 @@ NOTE_TO_FREQ = {
     "A4": 440.00,
 }
 
-s = Server().boot()
+# === Configuration du serveur audio ===
+s = Server(duplex=0, sr=44100)
+s.setOutputDevice(5)  # Remplace par l’index qui marche
+s.boot()
 s.start()
+print("Serveur pyo prêt")
 
-def piano(freq, dur=1.5, amp=2.3):
+# === Fonctions de son ===
+def piano(freq, dur=1.5, amp=0.4):
     osc = Sine(freq=freq, mul=amp)
     env = Adsr(0.005, 0.15, 0.4, 0.3, dur=dur)
     (osc * env).out()
@@ -23,5 +28,14 @@ def synth(freq, dur=0.5, amp=0.3):
     Freeverb(osc * env, size=0.8).out()
     env.play()
 
-piano(NOTE_TO_FREQ["C4"], 1)
-synth(NOTE_TO_FREQ["D4"], 1)
+def play_beep(freq=440, dur=2, amp=0.4):
+    osc = Sine(freq=freq, mul=amp)
+    env = Adsr(attack=0.01, decay=0.1, sustain=0.6, release=0.2, dur=dur)
+    (osc * env).out()
+    env.play()
+
+# === Test rapide uniquement si lancé directement ===
+if __name__ == "__main__":
+    print("Test du son...")
+    play_beep()
+    input("Appuyez sur Entrée une fois que le son a été joué...\n")

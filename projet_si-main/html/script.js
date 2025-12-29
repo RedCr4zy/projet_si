@@ -1,10 +1,10 @@
 // instruments data
 const instruments = [
-  { id: 'guitar', name: 'Guitare', icon: 'None' },
-  { id: 'piano',  name: 'Piano',  icon: 'None' },
-  { id: 'drums',  name: 'Batterie', icon: 'None' },
-  { id: 'bass',   name: 'Basse',  icon: 'None' },
-  { id: 'synth',  name: 'Synthé', icon: 'None' }
+  { id: 'guitar', name: 'Guitare', icon: '🎸' },
+  { id: 'piano',  name: 'Piano',  icon: '🎹' },
+  { id: 'drums',  name: 'Batterie', icon: '🥁' },
+  { id: 'bass',   name: 'Basse',  icon: '🎸' },
+  { id: 'synth',  name: 'Synthé', icon: '🎛️' },
 ];
 
 const listEl = document.getElementById('instrumentsList');
@@ -17,8 +17,8 @@ instruments.forEach((ins, i) => {
   const el = document.createElement('div');
   el.className = 'instrument-card';
   el.dataset.index = i;
-  //el.innerHTML = `<div class="icon">${ins.icon}</div><div class="name">${ins.name}</div>`;
-  el.innerHTML = `<div class="name">${ins.name}</div>`;
+  el.innerHTML = `<div class="icon">${ins.icon}</div><div class="name">${ins.name}</div>`;
+  //el.innerHTML = `<div class="name">${ins.name}</div>`;
   listEl.appendChild(el);
 });
 
@@ -155,3 +155,17 @@ playBtn.addEventListener('click', () => {
   console.log("Play request sent for", instrument);
 });
 
+ws.onmessage = (e) => {
+  console.log("Message reçu :", e.data);
+  const data = JSON.parse(e.data);
+
+  console.log("Type de message :", data.type);
+
+  if (data.type === "connection") {
+    ws.send(JSON.stringify({
+      type: "connection", 
+      msg: "Pong"
+    }));
+
+  }
+};
